@@ -1,22 +1,15 @@
 import type { Metadata } from "next";
-import { Archivo, Bodoni_Moda } from "next/font/google";
+import { Archivo } from "next/font/google";
 import "./globals.css";
 
-/* Synchronized Digital Studio, copied to the letter: a high-contrast display
-   serif at poster size against a neutral grotesque doing all the small work.
-   Bodoni Moda is the closest thing on Google Fonts to the reference's face —
-   variable optical sizing, so the hairlines stay hair-thin at 12rem. */
-const display = Bodoni_Moda({
-  subsets: ["latin"],
-  variable: "--font-bodoni",
-  weight: ["400", "500"],
-  style: ["normal", "italic"],
-});
-
-const body = Archivo({
+/* One family, four weights. A grotesque with a signage lineage rather than an
+   editorial one — the product is a clock you read mid-set, not a magazine.
+   Archivo's numerals are the reason it is here: tabular, even, and legible at
+   a glance from arm's length. */
+const sans = Archivo({
   subsets: ["latin"],
   variable: "--font-archivo",
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -29,7 +22,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable}`}>
+    <html lang="en" className={sans.variable}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );

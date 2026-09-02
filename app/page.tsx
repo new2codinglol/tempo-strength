@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Badge, Burst, Curtain, IntervalTimer, PlanToggle, Reveal } from "./_c/Bits";
+import { IntervalTimer, PlanToggle, Reveal } from "./_c/Bits";
 
 const U = (id: string, w: number) =>
   `https://images.unsplash.com/photo-${id}?w=${w}&q=72&auto=format&fit=crop`;
@@ -13,30 +13,10 @@ const PHOTO = {
   hex: "1584827387150-8ae4caebe906",
 };
 
-const TICKER = [
-  "20 MINUTES",
-  "3× A WEEK",
-  "NO STREAKS",
-  "NO LEADERBOARD",
-  "THE APP PICKS THE WEIGHT",
-  "YOU SHOW UP",
-];
-
 const NAV: [string, string][] = [
   ["How it works", "#how"],
-  ["Try the clock", "#try"],
   ["Sessions", "#sessions"],
   ["Pricing", "#price"],
-];
-
-/* The four hero lines, each with its own indent and its own size. In the
-   reference no two lines share a left edge and no two are the same length,
-   which is what stops the block reading as a centred stack. */
-const HERO_LINES = [
-  { t: "Twenty", indent: "21%", size: "13vw" },
-  { t: "minutes.", indent: "2%", size: "13vw" },
-  { t: "Three times", indent: "28%", size: "9.5vw" },
-  { t: "a week.", indent: "31%", size: "13vw" },
 ];
 
 const STEPS = [
@@ -68,295 +48,185 @@ const SESSIONS = [
 
 export default function Home() {
   return (
-    <div className="crush relative overflow-x-clip">
-      <Curtain words={HERO_LINES.map((l) => l.t)} />
-
-      <div className="relative z-10">
-        {/* ----------------------------------------------------- marquee */}
-        <div className="overflow-hidden border-b border-hair py-2.5">
-          <div className="ticker-track">
-            {[0, 1].map((copy) => (
-              <div key={copy} className="flex shrink-0" aria-hidden={copy === 1}>
-                {TICKER.map((t) => (
-                  <span
-                    key={t}
-                    className="micro flex items-center gap-8 whitespace-nowrap px-8 text-ink"
-                  >
-                    {t}
-                    <span className="h-[3px] w-[3px] rounded-full bg-dim" />
-                  </span>
-                ))}
-              </div>
+    <div>
+      {/* ------------------------------------------------------------ nav */}
+      <header className="rule sticky top-0 z-50 border-t-0 bg-floor/90 backdrop-blur-sm">
+        <nav className="wrap flex items-center gap-6 py-4">
+          <a href="#top" className="h3">
+            Tempo
+          </a>
+          <ul className="ml-auto hidden gap-7 sm:flex">
+            {NAV.map(([label, href]) => (
+              <li key={href}>
+                <a href={href} className="lab ul-hover text-ink-2">
+                  {label}
+                </a>
+              </li>
             ))}
-          </div>
-        </div>
+          </ul>
+          <a href="#price" className="btn btn-solid ml-auto px-5 py-2.5 text-[13px] sm:ml-0">
+            Start free
+          </a>
+        </nav>
+      </header>
 
-        {/* -------------------------------------------------------- hero */}
-        <section id="top" className="relative overflow-hidden px-6 pb-24 pt-7">
-          {/* the hairlines that cut the composition, slightly off vertical */}
-          <span className="rule-v left-[21%] rotate-[1.4deg]" aria-hidden />
-          <span className="rule-v left-[47%] -rotate-[0.9deg]" aria-hidden />
-          <span className="rule-v left-[72%] rotate-[1.1deg]" aria-hidden />
-
-          <header className="relative z-20 flex items-start justify-between gap-8">
-            <a href="#top" className="flex items-start gap-3">
-              <svg viewBox="0 0 44 44" className="h-11 w-11 shrink-0" aria-hidden fill="none">
-                <path
-                  d="M8 30 L30 8 M14 36 L36 14"
-                  stroke="var(--color-dim)"
-                  strokeWidth="1"
-                  strokeLinecap="round"
-                />
-                <rect
-                  x="7"
-                  y="7"
-                  width="30"
-                  height="30"
-                  rx="15"
-                  stroke="var(--color-hair)"
-                  strokeWidth="1"
-                />
-              </svg>
-              <span className="micro text-ink">
-                Tempo
-                <br />
-                Strength app
-              </span>
-            </a>
-
-            <nav className="flex flex-col items-end">
-              <ul className="micro flex flex-col items-end gap-0.5 text-ink">
-                {NAV.map(([label, href]) => (
-                  <li key={href}>
-                    <a href={href} className="ul-hover">
-                      {label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-              <a href="#price" className="micro ul-hover mt-4 text-bone">
-                Start free ↘
-              </a>
-            </nav>
-          </header>
-
-          {/* the display block */}
-          <h1 className="stack relative z-10 mt-10 sm:mt-6">
-            {HERO_LINES.map((l, i) => (
-              <span
-                key={l.t}
-                className="veil lift disp line"
-                style={{
-                  marginLeft: l.indent,
-                  fontSize: l.size,
-                  animationDelay: `${900 + i * 110}ms`,
-                }}
-              >
-                {l.t}
-              </span>
-            ))}
-          </h1>
-
-          {/* the copy block, nested inside the type rather than beside it */}
-          <div className="pointer-events-none absolute inset-0 z-20 hidden lg:block">
-            <div className="pointer-events-auto absolute right-[7%] top-[24%] max-w-[17ch]">
-              <p className="micro text-bone">Tempo is a strength app for people with a job.</p>
-              <p className="mt-4 text-[13px] leading-[1.5] text-dim">
-                Not a programme you have to keep up with. Four blocks, a clock that runs itself,
-                and a weight that moves when your reps say it should.
-              </p>
-            </div>
-
-            <div className="pointer-events-auto absolute right-[4%] top-[57%] text-right">
-              <a href="#try" className="micro text-ink">
-                Run
-                <br />
-                <span className="disp text-[22px] italic underline underline-offset-4">
-                  a block now
-                </span>
-              </a>
-            </div>
-
-            <Burst className="absolute left-[62%] top-[57%] h-[190px] w-[190px]" />
-            <Badge className="absolute left-[30%] top-[74%]" />
-          </div>
-
-          {/* Stacked rather than nested below lg. The composition does not
-              survive at 390px, and pretending otherwise costs legibility. */}
-          <div className="relative z-20 mt-12 lg:hidden">
-            <p className="micro text-bone">Tempo is a strength app for people with a job.</p>
-            <p className="mt-4 max-w-[42ch] text-[14px] leading-relaxed text-dim">
+      {/* ----------------------------------------------------------- hero */}
+      {/* The clock is the product, so it is the hero rather than a section
+          five screens down. Claim on the left, the real thing on the right,
+          one press from running. */}
+      <section id="top" className="wrap py-14 lg:py-20">
+        <div className="grid gap-10 lg:grid-cols-[1fr_1.05fr] lg:items-center">
+          <div className="order-2 lg:order-1">
+            <p className="lab text-ink-2">Strength for people with a job</p>
+            <h1 className="display mt-5">
+              Twenty minutes.
+              <br />
+              Three times a week.
+            </h1>
+            <p className="mt-6 max-w-md text-[17px] leading-relaxed text-ink-2">
               Not a programme you have to keep up with. Four blocks, a clock that runs itself, and
               a weight that moves when your reps say it should.
             </p>
-            <div className="mt-8 flex flex-wrap items-center gap-8">
-              <a href="#try" className="btn btn-solid px-7 py-3 text-[12px]">
-                Run a block now
+            <div className="mt-8 flex flex-wrap items-center gap-5">
+              <a href="#price" className="btn btn-solid px-7 py-3.5 text-[15px]">
+                Start two weeks free
               </a>
-              <Burst className="h-20 w-20" />
+              <span className="text-[14px] text-ink-2">No card. Cancel any time.</span>
             </div>
+            <p className="lab mt-8 text-ink-2">
+              No streaks · No leaderboard · No 6am push notification
+            </p>
           </div>
 
-          <p className="micro relative z-20 mt-16 text-dim lg:mt-[15rem]">
-            No streaks · No leaderboard · No 6am inspirational push notification
-          </p>
-        </section>
+          {/* On a phone the clock comes first — it is the argument, and
+              burying it under the claim loses it. */}
+          <div className="order-1 lg:order-2">
+            <IntervalTimer />
+          </div>
+        </div>
+      </section>
 
-        {/* --------------------------------------------------------- how */}
-        <section id="how" className="border-t border-hair px-6 py-24">
+      {/* ------------------------------------------------------------ how */}
+      <section id="how" className="rule border-t">
+        <div className="wrap py-16">
           <Reveal>
-            <p className="micro text-dim">01 — How it works</p>
-            <h2 className="disp mt-5 text-[13vw] leading-[0.82] sm:text-[7rem]">
-              Three decisions,
-              <br />
-              then it has it.
-            </h2>
+            <h2 className="h2 max-w-[18ch]">Three decisions, then the app has it.</h2>
           </Reveal>
 
-          <div className="mt-16 grid gap-x-12 gap-y-12 md:grid-cols-3">
+          <div className="mt-12 grid gap-10 md:grid-cols-3">
             {STEPS.map((s, i) => (
               <Reveal key={s.n} delay={i * 0.06}>
-                <div className="dash pt-5">
-                  <p className="micro text-dim">{s.n}</p>
-                  <h3 className="disp mt-4 text-[2rem] leading-[0.95]">{s.title}</h3>
-                  <p className="mt-4 text-[14px] leading-relaxed text-dim">{s.body}</p>
+                <div className="rule border-t pt-5">
+                  <p className="lab text-ink-2">{s.n}</p>
+                  <h3 className="h3 mt-4">{s.title}</h3>
+                  <p className="mt-3 text-[15px] leading-relaxed text-ink-2">{s.body}</p>
                 </div>
               </Reveal>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* --------------------------------------------------------- try */}
-        <section id="try" className="border-t border-hair px-6 py-24">
-          <div className="grid gap-14 lg:grid-cols-[1fr_1.05fr] lg:items-start">
-            <Reveal>
-              <p className="micro text-dim">02 — The clock</p>
-              <h2 className="disp mt-5 text-[13vw] leading-[0.82] sm:text-[6.5rem]">
-                The clock is
-                <br />
-                the product.
-              </h2>
-              <p className="mt-8 max-w-[38ch] text-[14px] leading-relaxed text-dim">
-                So it is on the page rather than in a screenshot. Press start and run the first
-                block of Ground Floor — the real intervals, the real cadence. In the app the same
-                clock speaks the phase change out loud, so you never look at the screen mid-set.
-                Here you get the bar.
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.06}>
-              <IntervalTimer />
-            </Reveal>
-          </div>
-        </section>
-
-        {/* ---------------------------------------------------- sessions */}
-        <section id="sessions" className="border-t border-hair px-6 py-24">
+      {/* ------------------------------------------------------- sessions */}
+      <section id="sessions" className="rule border-t">
+        <div className="wrap py-16">
           <Reveal>
-            <p className="micro text-dim">03 — The library</p>
-            <h2 className="disp mt-5 text-[13vw] leading-[0.82] sm:text-[7rem]">
-              Six sessions.
-              <br />
-              That is all of it.
-            </h2>
-            <p className="mt-8 max-w-[46ch] text-[14px] leading-relaxed text-dim">
+            <h2 className="h2">Six sessions. That is the library.</h2>
+            <p className="mt-4 max-w-[46ch] text-[16px] leading-relaxed text-ink-2">
               A bigger catalogue would be a content problem pretending to be a training problem.
             </p>
           </Reveal>
 
-          <div className="mt-16 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {SESSIONS.map((s, i) => (
               <Reveal key={s.name} delay={i * 0.05}>
-                <article className="group">
-                  <div className="relative aspect-[4/3] overflow-hidden">
+                <article className="card overflow-hidden">
+                  <div className="relative aspect-[3/2] overflow-hidden">
                     <Image
                       src={U(s.photo, 560)}
                       alt=""
                       width={560}
-                      height={420}
-                      className="h-full w-full object-cover grayscale brightness-[0.72] contrast-[1.15] transition-[filter,transform] duration-500 ease-out group-hover:scale-[1.02] group-hover:brightness-90"
+                      height={374}
+                      className="h-full w-full object-cover"
                     />
                   </div>
-                  <div className="dash mt-5 flex items-baseline justify-between gap-4 pt-4">
-                    <h3 className="disp text-[1.7rem] leading-none">{s.name}</h3>
-                    <span className="micro tabular-nums text-dim">{s.mins} min</span>
+                  <div className="p-5">
+                    <div className="flex items-baseline justify-between gap-3">
+                      <h3 className="h3">{s.name}</h3>
+                      <span className="fig text-[15px]">{s.mins} min</span>
+                    </div>
+                    <p className="lab mt-3 text-ink-2">
+                      {s.tag} · {s.kit}
+                    </p>
                   </div>
-                  <p className="micro mt-3 text-dim">
-                    {s.tag} · {s.kit}
-                  </p>
                 </article>
               </Reveal>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ------------------------------------------------------- price */}
-        <section id="price" className="border-t border-hair px-6 py-24">
-          <div className="grid gap-14 lg:grid-cols-2 lg:items-start">
-            <Reveal>
-              <p className="micro text-dim">04 — Pricing</p>
-              <h2 className="disp mt-5 text-[13vw] leading-[0.82] sm:text-[6.5rem]">
-                One plan.
-                <br />
-                It does everything.
-              </h2>
-              <p className="mt-8 max-w-[38ch] text-[14px] leading-relaxed text-dim">
-                There is no tier that unlocks the weights. Two weeks free, no card, and the export
-                button works whether you are paying or not.
-              </p>
-              <ul className="mt-9 max-w-[40ch]">
-                {[
-                  "All six sessions and every progression",
-                  "Voice cues for phase changes",
-                  "Apple Health and Google Fit sync",
-                  "CSV export of every set you have logged",
-                ].map((f) => (
-                  <li key={f} className="dash micro flex gap-5 py-3 text-ink">
-                    <span className="text-dim">—</span>
-                    {f}
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
+      {/* ---------------------------------------------------------- price */}
+      <section id="price" className="rule border-t">
+        <div className="wrap grid gap-12 py-16 lg:grid-cols-2 lg:items-start">
+          <Reveal>
+            <h2 className="h2">One plan. It does everything.</h2>
+            <p className="mt-4 max-w-md text-[16px] leading-relaxed text-ink-2">
+              There is no tier that unlocks the weights. Two weeks free, no card, and the export
+              button works whether you are paying or not.
+            </p>
+            <ul className="mt-8 max-w-[42ch]">
+              {[
+                "All six sessions and every progression",
+                "Voice cues for phase changes",
+                "Apple Health and Google Fit sync",
+                "CSV export of every set you have logged",
+              ].map((f) => (
+                <li key={f} className="rule flex gap-4 border-t py-3 text-[15px]">
+                  <span className="text-ink-2">—</span>
+                  {f}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
 
-            <Reveal delay={0.06}>
+          <Reveal delay={0.06}>
+            <div className="card p-8">
               <PlanToggle />
-              <a href="#top" className="btn btn-solid mt-10 inline-block px-8 py-3.5 text-[12px]">
+              <a href="#top" className="btn btn-solid mt-8 inline-block px-7 py-3.5 text-[15px]">
                 Start two weeks free
               </a>
-              <p className="mt-5 text-[13px] text-dim">
-                Tempo is not real.{" "}
-                <a
-                  href="https://github.com/new2codinglol/tempo-strength"
-                  className="ul-hover text-ink"
-                >
-                  Read the source
-                </a>{" "}
-                instead.
-              </p>
-            </Reveal>
-          </div>
-        </section>
+            </div>
+            <p className="mt-5 text-[14px] text-ink-2">
+              Tempo is not real.{" "}
+              <a
+                href="https://github.com/new2codinglol/tempo-strength"
+                className="text-ink underline underline-offset-[3px]"
+              >
+                Read the source
+              </a>{" "}
+              instead.
+            </p>
+          </Reveal>
+        </div>
+      </section>
 
-        {/* ------------------------------------------------------ footer */}
-        <footer className="border-t border-hair px-6 pb-14 pt-20">
-          <p className="disp text-[13vw] leading-[0.82] sm:text-[8rem]">
-            Twenty minutes.
-            <br />
-            You have twenty minutes.
-          </p>
-          <div className="dash mt-16 grid gap-8 pt-6 text-[12px] leading-relaxed text-dim sm:grid-cols-2">
+      {/* --------------------------------------------------------- footer */}
+      <footer className="rule border-t">
+        <div className="wrap py-12">
+          <p className="h2 max-w-[16ch]">Twenty minutes. You have twenty minutes.</p>
+          <div className="rule mt-10 grid gap-6 border-t pt-6 text-[13px] leading-relaxed text-ink-2 sm:grid-cols-2">
             <p>
               Tempo is a fictional product. This page is a design-engineering portfolio piece by
-              Jason Low — the app does not exist, but the interval clock above really runs.
+              Jason Low — the app does not exist, but the interval clock at the top really runs.
             </p>
             <p className="sm:text-right">
               Photography from Unsplash: Michael DeMoya, Subtle Cinematics, Tejj, Samuel Girven,
               Delaney Van, Ramy Mamdouh.
             </p>
           </div>
-        </footer>
-      </div>
+        </div>
+      </footer>
     </div>
   );
 }
