@@ -108,20 +108,23 @@ export default function Home() {
       </header>
 
       {/* --------------------------------------------------------- hero */}
-      <section id="top" className="mx-auto grid max-w-6xl gap-12 px-5 py-14 lg:grid-cols-[1.05fr_.95fr] lg:py-20">
+      <section id="top" className="relative mx-auto max-w-6xl px-5 py-14 lg:py-20">
+        <div className="grid gap-12 lg:grid-cols-[1.15fr_.85fr]">
         <div>
           <p className="inline-block border-4 border-ink bg-lemon px-3 py-1 font-display text-sm font-extrabold">
             Strength for people with a job
           </p>
 
-          <h1 className="mt-6 font-display text-[3.1rem] font-extrabold leading-[0.92] tracking-[-0.035em] sm:text-7xl">
-            Twenty minutes.
-            <br />
-            Three times
-            <br />
-            <span className="relative inline-block">
+          {/* Type as layout: each line takes its own indent so the block reads
+              as a composition rather than a centred stack, and the last line
+              runs past the column into the photography. */}
+          <h1 className="relative z-20 mt-6 font-display text-[3.4rem] font-extrabold leading-[0.86] tracking-[-0.045em] sm:text-[5.6rem] lg:text-[7.2rem]">
+            <span className="block">Twenty</span>
+            <span className="block pl-[6%]">minutes.</span>
+            <span className="block pl-[2%]">Three times</span>
+            <span className="relative block pl-[14%] lg:whitespace-nowrap">
               a week.
-              <Squiggle className="wobble absolute -bottom-5 left-0 h-8 w-[86%] text-rose" />
+              <Squiggle className="wobble absolute -bottom-4 left-[14%] h-8 w-[70%] text-rose" />
             </span>
           </h1>
 
@@ -145,7 +148,7 @@ export default function Home() {
         </div>
 
         {/* stacked photo blocks — Memphis composition, not a hero banner */}
-        <div className="relative min-h-[420px]">
+        <div className="relative z-10 min-h-[420px] lg:-mt-28">
           <div className="blk absolute left-0 top-0 w-[64%] overflow-hidden">
             <Image
               src={U(PHOTO.hero, 720)}
@@ -169,6 +172,7 @@ export default function Home() {
             className="stripe absolute right-[8%] top-[6%] h-16 w-16 opacity-80"
             aria-hidden
           />
+        </div>
         </div>
       </section>
 
