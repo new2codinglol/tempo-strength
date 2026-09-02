@@ -1,149 +1,85 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
-   Synchronized Digital Studio, copied. Near-black ground under a crumpled
-   surface, a high-contrast display serif at poster size, and a neutral
-   grotesque doing every small job. The reference is monochrome — there is no
-   accent hue anywhere in it — so emphasis here is inversion, not colour.
-   That replaces the Y2K chrome and takes the ShaderGradient canvas with it.
+   Derived from the product rather than from a reference site.
+
+   Tempo's own copy rejects aspiration: no streaks, no leaderboard, no 6am
+   inspirational push notification. A page that sets that in a fashion serif at
+   poster scale argues the opposite of what it says. So this is equipment: a
+   gym-floor grey ground, near-black type in one grotesque, and a single safety
+   yellow doing exactly one job — marking the phase that is currently running.
+
+   Nothing here is decorative. There is no ambient motion on this page at all.
 --------------------------------------------------------------------------- */
 
 @theme {
-  --font-display: var(--font-bodoni), "Didot", "Bodoni MT", Georgia, serif;
   --font-sans: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
 
-  --color-void: #0a0a0a;
-  --color-ink: #c9c7c2;   /* the display face sits at grey, never white */
-  --color-bone: #edeae4;
-  --color-dim: #6b6a67;
-  --color-hair: #262523;
+  --color-floor: #ececeb;  /* the ground — a cool light grey, not white */
+  --color-card: #ffffff;
+  --color-ink: #141416;
+  --color-ink-2: #66666c;
+  --color-rule: #d2d2d0;
+  --color-work: #ffd400;   /* the running phase, and nothing else */
 }
 
 :root {
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
 body {
-  background: var(--color-void);
+  background: var(--color-floor);
   color: var(--color-ink);
   min-height: 100dvh;
-  font-synthesis-weight: none;
+  font-feature-settings: "tnum" on;   /* a timer should never shift width */
 }
 
-/* The crumpled ground. The reference photographs creased fabric; this is
-   fractal noise lit from one side, which reads as the same thing at 6%. */
-.crush::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.5;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012' numOctaves='4' seed='7'/%3E%3CfeDiffuseLighting lighting-color='%23fff' surfaceScale='2.4'%3E%3CfeDistantLight azimuth='115' elevation='58'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='600' height='600' filter='url(%23c)'/%3E%3C/svg%3E");
-  background-size: 900px 900px;
-  mix-blend-mode: soft-light;
-}
+::selection { background: var(--color-work); color: var(--color-ink); }
 
 /* --- type ---------------------------------------------------------------- */
 
-.disp {
-  font-family: var(--font-display);
-  font-weight: 400;
-  line-height: 0.82;
-  letter-spacing: -0.015em;
-  color: var(--color-ink);
-}
+.display { font-size: clamp(2.6rem, 6.4vw, 5rem); line-height: 0.95; letter-spacing: -0.035em; font-weight: 700; }
+.h2 { font-size: clamp(1.8rem, 3.4vw, 2.75rem); line-height: 1; letter-spacing: -0.025em; font-weight: 700; }
+.h3 { font-size: 1.15rem; line-height: 1.2; letter-spacing: -0.01em; font-weight: 600; }
+.lab { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.fig { font-variant-numeric: tabular-nums; letter-spacing: -0.04em; font-weight: 700; }
 
-.micro {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  line-height: 1.45;
-}
+/* --- structure ----------------------------------------------------------- */
 
-/* --- the display block: each line takes its own indent, as in the source --- */
+.wrap { max-width: 1180px; margin-inline: auto; padding-inline: 24px; }
+.rule { border-top: 1px solid var(--color-rule); }
 
-.stack { display: flex; flex-direction: column; }
-.line { display: block; white-space: nowrap; }
-
-/* Lines arrive by uncovering, not by moving — a curtain lifting off type
-   that was already set. clip-path keeps it on the compositor. */
-.veil { clip-path: inset(0 0 100% 0); }
-.lift { animation: lift 900ms var(--ease-out) forwards; }
-@keyframes lift { to { clip-path: inset(0 0 -12% 0); } }
-
-/* --- hairlines ----------------------------------------------------------- */
-
-.rule-v {
-  position: absolute;
-  top: -8%;
-  height: 116%;
-  width: 1px;
-  background: linear-gradient(180deg, transparent, var(--color-hair) 14%, var(--color-hair) 86%, transparent);
-  transform-origin: top;
-  pointer-events: none;
-}
-.dash { border-top: 1px dashed var(--color-hair); }
+/* Depth is a change of material, not a shadow: white card on grey floor. */
+.card { background: var(--color-card); border: 1px solid var(--color-rule); border-radius: 4px; }
 
 /* --- controls ------------------------------------------------------------ */
 
 .btn {
-  font-family: var(--font-sans);
-  font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  border: 1px solid var(--color-ink);
-  color: var(--color-bone);
-  background: transparent;
-  transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out),
-    transform 160ms var(--ease-out);
+  border-radius: 4px;
+  font-weight: 600;
+  transition: background-color 140ms var(--ease-out), color 140ms var(--ease-out),
+    transform 140ms var(--ease-out), border-color 140ms var(--ease-out);
 }
 .btn:active { transform: scale(0.97); }
-.btn-solid { background: var(--color-bone); color: var(--color-void); border-color: var(--color-bone); }
+.btn-solid { background: var(--color-ink); color: var(--color-card); }
+.btn-ghost { background: transparent; border: 1px solid var(--color-ink); color: var(--color-ink); }
+
 a:focus-visible, button:focus-visible {
-  outline: 1px solid var(--color-bone);
-  outline-offset: 4px;
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
 }
+
 @media (hover: hover) and (pointer: fine) {
-  .btn:hover { background: var(--color-bone); color: var(--color-void); }
-  .btn-solid:hover { background: transparent; color: var(--color-bone); }
-  .ul-hover { background-image: linear-gradient(var(--color-ink), var(--color-ink)); background-size: 0 1px;
-    background-repeat: no-repeat; background-position: 0 100%; transition: background-size 220ms var(--ease-out); }
-  .ul-hover:hover { background-size: 100% 1px; }
+  .btn-solid:hover { background: #2c2c30; }
+  .btn-ghost:hover { background: var(--color-ink); color: var(--color-card); }
+  .ul-hover { text-decoration: underline transparent; text-underline-offset: 3px; transition: text-decoration-color 160ms var(--ease-out); }
+  .ul-hover:hover { text-decoration-color: currentColor; }
 }
-
-/* --- marquee ------------------------------------------------------------- */
-
-@keyframes slide { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
-.ticker-track { display: flex; width: max-content; animation: slide 42s linear infinite; }
-
-/* --- the badge ----------------------------------------------------------- */
-
-@keyframes spin { to { transform: rotate(360deg); } }
-.badge-ring { animation: spin 34s linear infinite; }
-
-/* --- the burst ----------------------------------------------------------- */
-
-.burst line { stroke-dasharray: 90; stroke-dashoffset: 90; }
-.burst.drawn line { animation: draw 900ms var(--ease-out) forwards; }
-@keyframes draw { to { stroke-dashoffset: 0; } }
-
-/* --- preloader ----------------------------------------------------------- */
-
-.curtain { position: fixed; inset: 0; z-index: 90; background: var(--color-void); }
-.curtain-out { animation: curtain 780ms var(--ease-in-out) forwards; }
-@keyframes curtain { to { clip-path: inset(0 0 100% 0); } }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .ticker-track, .badge-ring { animation: none; }
-  .veil { clip-path: none; }
-  .lift, .burst.drawn line { animation-duration: 1ms; }
-  .burst line { stroke-dashoffset: 0; }
   *, *::before, *::after {
     animation-duration: 1ms !important;
     animation-iteration-count: 1 !important;
