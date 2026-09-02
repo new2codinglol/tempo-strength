@@ -26,19 +26,19 @@ const TICKER = [
 const STEPS = [
   {
     n: "01",
-    colour: "var(--color-lemon)",
+    shade: "blk-lemon",
     title: "Tell it what you have",
     body: "A barbell, two dumbbells, or a doorway and a backpack. Tempo builds the session around the equipment in the room, not the equipment in the video.",
   },
   {
     n: "02",
-    colour: "var(--color-rose)",
+    shade: "blk-rose",
     title: "Four blocks, twenty minutes",
     body: "One push, one pull, one hinge, one carry. Three rounds each at 45 on and 15 off. The clock runs the session so you are not doing arithmetic between sets.",
   },
   {
     n: "03",
-    colour: "var(--color-cyan)",
+    shade: "blk-cyan",
     title: "It moves the weight, not you",
     body: "Log the reps you actually finished. Next week's load comes from that number. Miss a week and it steps back rather than pretending you did not.",
   },
@@ -191,8 +191,7 @@ export default function Home() {
           <div className="mt-10 grid gap-8 md:grid-cols-3">
             {STEPS.map((s, i) => (
               <Reveal key={s.n} delay={i * 0.06}>
-                <div className="lift h-full border-4 border-ink bg-paper p-6"
-                     style={{ boxShadow: `8px 8px 0 ${s.colour}, 16px 16px 0 var(--color-ink)` }}>
+                <div className={`lift blk ${s.shade} h-full p-6`}>
                   <p className="font-display text-5xl font-extrabold leading-none">{s.n}</p>
                   <h3 className="mt-4 font-display text-xl font-extrabold">{s.title}</h3>
                   <p className="mt-2 leading-relaxed">{s.body}</p>
@@ -250,7 +249,7 @@ export default function Home() {
                       height={340}
                       className="h-full w-full object-cover"
                     />
-                    <span className="absolute left-0 top-0 border-b-4 border-r-4 border-ink bg-paper px-3 py-1 font-display text-xs font-extrabold">
+                    <span className="absolute left-0 top-0 border-b-4 border-r-4 border-ink bg-white px-3 py-1 font-display text-xs font-extrabold">
                       {s.tag}
                     </span>
                   </div>
@@ -302,20 +301,27 @@ export default function Home() {
               >
                 Start two weeks free
               </a>
+              <p className="mt-4 text-sm">
+                Tempo is not real.{" "}
+                <a href="https://github.com/new2codinglol/tempo-strength" className="underline underline-offset-2">
+                  Read the source
+                </a>{" "}
+                instead.
+              </p>
             </div>
           </Reveal>
         </div>
       </section>
 
       {/* ------------------------------------------------------- footer */}
-      <footer className="border-t-2 border-white/70 bg-ink/90 px-5 py-12 text-paper">
+      <footer className="border-t-2 border-white/70 bg-ink/90 px-5 py-12 text-white">
         <div className="mx-auto max-w-6xl">
           <p className="font-display text-4xl font-extrabold tracking-tight sm:text-6xl">
             Twenty minutes.
             <br />
             You have twenty minutes.
           </p>
-          <div className="mt-10 grid gap-6 border-t-4 border-paper/25 pt-6 text-sm sm:grid-cols-2">
+          <div className="mt-10 grid gap-6 border-t-4 border-white/25 pt-6 text-sm sm:grid-cols-2">
             <p>
               Tempo is a fictional product. This page is a design-engineering portfolio piece by
               Jason Low — the app does not exist, but the interval clock above really runs.

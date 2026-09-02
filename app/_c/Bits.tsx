@@ -81,7 +81,8 @@ export function IntervalTimer() {
   const total = resting ? REST : WORK;
   const pct = Math.max(0, Math.min(1, left / total));
   const phase = resting ? "Rest" : "Work";
-  const colour = resting ? "var(--color-cyan)" : "var(--color-rose)";
+  // Rest is ice, work is the accent — the accent's one job on this page.
+  const colour = resting ? "var(--color-ice)" : "var(--color-accent)";
 
   return (
     <div className="blk blk-lemon p-6 sm:p-8">
@@ -101,7 +102,7 @@ export function IntervalTimer() {
         </p>
         <p
           className="px-3 py-1 font-display text-lg font-extrabold uppercase"
-          style={{ background: colour, border: "4px solid #111" }}
+          style={{ background: colour, border: "2px solid var(--color-rim)" }}
         >
           {phase}
         </p>
