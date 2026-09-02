@@ -1,6 +1,5 @@
 import Image from "next/image";
-import { IntervalTimer, PlanToggle, Reveal } from "./_c/Bits";
-import { Iridescence } from "./_c/Iridescence";
+import { Badge, Burst, Curtain, IntervalTimer, PlanToggle, Reveal } from "./_c/Bits";
 
 const U = (id: string, w: number) =>
   `https://images.unsplash.com/photo-${id}?w=${w}&q=72&auto=format&fit=crop`;
@@ -23,305 +22,330 @@ const TICKER = [
   "YOU SHOW UP",
 ];
 
+const NAV: [string, string][] = [
+  ["How it works", "#how"],
+  ["Try the clock", "#try"],
+  ["Sessions", "#sessions"],
+  ["Pricing", "#price"],
+];
+
+/* The four hero lines, each with its own indent and its own size. In the
+   reference no two lines share a left edge and no two are the same length,
+   which is what stops the block reading as a centred stack. */
+const HERO_LINES = [
+  { t: "Twenty", indent: "21%", size: "13vw" },
+  { t: "minutes.", indent: "2%", size: "13vw" },
+  { t: "Three times", indent: "28%", size: "9.5vw" },
+  { t: "a week.", indent: "31%", size: "13vw" },
+];
+
 const STEPS = [
   {
     n: "01",
-    shade: "blk-lemon",
     title: "Tell it what you have",
     body: "A barbell, two dumbbells, or a doorway and a backpack. Tempo builds the session around the equipment in the room, not the equipment in the video.",
   },
   {
     n: "02",
-    shade: "blk-rose",
     title: "Four blocks, twenty minutes",
     body: "One push, one pull, one hinge, one carry. Three rounds each at 45 on and 15 off. The clock runs the session so you are not doing arithmetic between sets.",
   },
   {
     n: "03",
-    shade: "blk-cyan",
     title: "It moves the weight, not you",
     body: "Log the reps you actually finished. Next week's load comes from that number. Miss a week and it steps back rather than pretending you did not.",
   },
 ];
 
 const SESSIONS = [
-  { name: "Ground Floor", tag: "Week 1–4", mins: 20, kit: "Two dumbbells", photo: PHOTO.hex, shade: "blk-lemon" },
-  { name: "Long Lever", tag: "Hinge focus", mins: 22, kit: "Barbell", photo: PHOTO.rackMono, shade: "blk-rose" },
-  { name: "Carry Home", tag: "Grip and trunk", mins: 18, kit: "Anything heavy", photo: PHOTO.rackWide, shade: "blk-cyan" },
-  { name: "Hotel Room", tag: "No kit", mins: 16, kit: "Bodyweight", photo: PHOTO.bright, shade: "blk-lemon" },
-  { name: "Top Set", tag: "Week 9+", mins: 24, kit: "Barbell", photo: PHOTO.spotlight, shade: "blk-cyan" },
-  { name: "Deload", tag: "Every 5th week", mins: 14, kit: "Two dumbbells", photo: PHOTO.hero, shade: "blk-rose" },
+  { name: "Ground Floor", tag: "Week 1–4", mins: 20, kit: "Two dumbbells", photo: PHOTO.hex },
+  { name: "Long Lever", tag: "Hinge focus", mins: 22, kit: "Barbell", photo: PHOTO.rackMono },
+  { name: "Carry Home", tag: "Grip and trunk", mins: 18, kit: "Anything heavy", photo: PHOTO.rackWide },
+  { name: "Hotel Room", tag: "No kit", mins: 16, kit: "Bodyweight", photo: PHOTO.bright },
+  { name: "Top Set", tag: "Week 9+", mins: 24, kit: "Barbell", photo: PHOTO.spotlight },
+  { name: "Deload", tag: "Every 5th week", mins: 14, kit: "Two dumbbells", photo: PHOTO.hero },
 ];
-
-function Squiggle({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 220 40" className={className} aria-hidden fill="none">
-      <path
-        d="M2 22C22 2 42 2 62 22s40 20 60 0 40-20 60 0 36 20 36 20"
-        stroke="currentColor"
-        strokeWidth="7"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
 
 export default function Home() {
   return (
-    <div className="relative">
-      <Iridescence />
+    <div className="crush relative overflow-x-clip">
+      <Curtain words={HERO_LINES.map((l) => l.t)} />
+
       <div className="relative z-10">
-      {/* ------------------------------------------------------- ticker */}
-      <div className="overflow-hidden border-b-2 border-white/70 bg-ink/85 py-2.5 backdrop-blur-sm">
-        <div className="ticker-track">
-          {[0, 1].map((copy) => (
-            <div key={copy} className="flex shrink-0" aria-hidden={copy === 1}>
-              {TICKER.map((t) => (
-                <span
-                  key={t}
-                  className="flex items-center gap-6 whitespace-nowrap px-6 font-display text-sm font-extrabold tracking-wide text-ice"
-                >
-                  {t}
-                  <span className="h-2 w-2 rotate-45 bg-accent" />
-                </span>
-              ))}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* ---------------------------------------------------------- nav */}
-      <header className="sticky top-0 z-50 border-b-2 border-white/70 bg-white/55 backdrop-blur-md">
-        <nav className="mx-auto flex max-w-6xl items-center gap-4 px-5 py-3">
-          <a href="#top" className="font-display text-2xl font-extrabold tracking-tight">
-            Tempo<span className="text-accent">.</span>
-          </a>
-          <div className="ml-auto hidden gap-5 font-display text-sm font-extrabold sm:flex">
-            <a href="#how" className="hover:text-accent">How it works</a>
-            <a href="#try" className="hover:text-accent">Try the clock</a>
-            <a href="#sessions" className="hover:text-accent">Sessions</a>
+        {/* ----------------------------------------------------- marquee */}
+        <div className="overflow-hidden border-b border-hair py-2.5">
+          <div className="ticker-track">
+            {[0, 1].map((copy) => (
+              <div key={copy} className="flex shrink-0" aria-hidden={copy === 1}>
+                {TICKER.map((t) => (
+                  <span
+                    key={t}
+                    className="micro flex items-center gap-8 whitespace-nowrap px-8 text-ink"
+                  >
+                    {t}
+                    <span className="h-[3px] w-[3px] rounded-full bg-dim" />
+                  </span>
+                ))}
+              </div>
+            ))}
           </div>
-          <a
-            href="#price"
-            className="btn ml-auto bg-accent px-4 py-2 font-display text-sm font-extrabold sm:ml-0"
-          >
-            Start free
-          </a>
-        </nav>
-      </header>
+        </div>
 
-      {/* --------------------------------------------------------- hero */}
-      <section id="top" className="relative mx-auto max-w-6xl px-5 py-14 lg:py-20">
-        <div className="grid gap-12 lg:grid-cols-[1.15fr_.85fr]">
-        <div>
-          <p className="inline-block border-4 border-ink bg-ice/70 px-3 py-1 font-display text-sm font-extrabold">
-            Strength for people with a job
-          </p>
+        {/* -------------------------------------------------------- hero */}
+        <section id="top" className="relative overflow-hidden px-6 pb-24 pt-7">
+          {/* the hairlines that cut the composition, slightly off vertical */}
+          <span className="rule-v left-[21%] rotate-[1.4deg]" aria-hidden />
+          <span className="rule-v left-[47%] -rotate-[0.9deg]" aria-hidden />
+          <span className="rule-v left-[72%] rotate-[1.1deg]" aria-hidden />
 
-          {/* Type as layout: each line takes its own indent so the block reads
-              as a composition rather than a centred stack, and the last line
-              runs past the column into the photography. */}
-          <h1 className="relative z-20 mt-6 font-display text-[3.4rem] font-extrabold leading-[0.86] tracking-[-0.045em] sm:text-[5.6rem] lg:text-[7.2rem]">
-            <span className="block">Twenty</span>
-            <span className="block pl-[6%]">minutes.</span>
-            <span className="block pl-[2%]">Three times</span>
-            <span className="relative block pl-[14%] lg:whitespace-nowrap">
-              a week.
-              <Squiggle className="wobble absolute -bottom-4 left-[14%] h-8 w-[70%] text-accent" />
-            </span>
+          <header className="relative z-20 flex items-start justify-between gap-8">
+            <a href="#top" className="flex items-start gap-3">
+              <svg viewBox="0 0 44 44" className="h-11 w-11 shrink-0" aria-hidden fill="none">
+                <path
+                  d="M8 30 L30 8 M14 36 L36 14"
+                  stroke="var(--color-dim)"
+                  strokeWidth="1"
+                  strokeLinecap="round"
+                />
+                <rect
+                  x="7"
+                  y="7"
+                  width="30"
+                  height="30"
+                  rx="15"
+                  stroke="var(--color-hair)"
+                  strokeWidth="1"
+                />
+              </svg>
+              <span className="micro text-ink">
+                Tempo
+                <br />
+                Strength app
+              </span>
+            </a>
+
+            <nav className="flex flex-col items-end">
+              <ul className="micro flex flex-col items-end gap-0.5 text-ink">
+                {NAV.map(([label, href]) => (
+                  <li key={href}>
+                    <a href={href} className="ul-hover">
+                      {label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              <a href="#price" className="micro ul-hover mt-4 text-bone">
+                Start free ↘
+              </a>
+            </nav>
+          </header>
+
+          {/* the display block */}
+          <h1 className="stack relative z-10 mt-10 sm:mt-6">
+            {HERO_LINES.map((l, i) => (
+              <span
+                key={l.t}
+                className="veil lift disp line"
+                style={{
+                  marginLeft: l.indent,
+                  fontSize: l.size,
+                  animationDelay: `${900 + i * 110}ms`,
+                }}
+              >
+                {l.t}
+              </span>
+            ))}
           </h1>
 
-          <p className="mt-12 max-w-md text-lg leading-relaxed">
-            Not a programme you have to keep up with. Four blocks, a clock that runs itself, and a
-            weight that moves when your reps say it should.
+          {/* the copy block, nested inside the type rather than beside it */}
+          <div className="pointer-events-none absolute inset-0 z-20 hidden lg:block">
+            <div className="pointer-events-auto absolute right-[7%] top-[24%] max-w-[17ch]">
+              <p className="micro text-bone">Tempo is a strength app for people with a job.</p>
+              <p className="mt-4 text-[13px] leading-[1.5] text-dim">
+                Not a programme you have to keep up with. Four blocks, a clock that runs itself,
+                and a weight that moves when your reps say it should.
+              </p>
+            </div>
+
+            <div className="pointer-events-auto absolute right-[4%] top-[57%] text-right">
+              <a href="#try" className="micro text-ink">
+                Run
+                <br />
+                <span className="disp text-[22px] italic underline underline-offset-4">
+                  a block now
+                </span>
+              </a>
+            </div>
+
+            <Burst className="absolute left-[62%] top-[57%] h-[190px] w-[190px]" />
+            <Badge className="absolute left-[30%] top-[74%]" />
+          </div>
+
+          {/* Stacked rather than nested below lg. The composition does not
+              survive at 390px, and pretending otherwise costs legibility. */}
+          <div className="relative z-20 mt-12 lg:hidden">
+            <p className="micro text-bone">Tempo is a strength app for people with a job.</p>
+            <p className="mt-4 max-w-[42ch] text-[14px] leading-relaxed text-dim">
+              Not a programme you have to keep up with. Four blocks, a clock that runs itself, and
+              a weight that moves when your reps say it should.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center gap-8">
+              <a href="#try" className="btn btn-solid px-7 py-3 text-[12px]">
+                Run a block now
+              </a>
+              <Burst className="h-20 w-20" />
+            </div>
+          </div>
+
+          <p className="micro relative z-20 mt-16 text-dim lg:mt-[15rem]">
+            No streaks · No leaderboard · No 6am inspirational push notification
           </p>
+        </section>
 
-          <div className="mt-8 flex flex-wrap gap-4">
-            <a href="#try" className="btn bg-ink px-7 py-4 font-display text-base font-extrabold text-white">
-              Run a block now
-            </a>
-            <a href="#how" className="btn bg-white px-7 py-4 font-display text-base font-extrabold">
-              How it works
-            </a>
-          </div>
-
-          <p className="mt-6 font-display text-sm font-bold">
-            No streaks. No leaderboard. No 6am inspirational push notification.
-          </p>
-        </div>
-
-        {/* stacked photo blocks — Memphis composition, not a hero banner */}
-        <div className="relative z-10 min-h-[420px] lg:-mt-28">
-          <div className="blk absolute left-0 top-0 w-[64%] overflow-hidden">
-            <Image
-              src={U(PHOTO.hero, 720)}
-              alt="Lifting a dumbbell in a dimly lit gym"
-              width={720}
-              height={1080}
-              priority
-              className="h-full w-full object-cover"
-            />
-          </div>
-          <div className="blk blk-cyan absolute bottom-0 right-0 w-[56%] overflow-hidden">
-            <Image
-              src={U(PHOTO.bright, 640)}
-              alt="Pulling on a hooded top beside a rack of dumbbells"
-              width={640}
-              height={960}
-              className="h-full w-full object-cover"
-            />
-          </div>
-          <div
-            className="stripe absolute right-[8%] top-[6%] h-16 w-16 opacity-80"
-            aria-hidden
-          />
-        </div>
-        </div>
-      </section>
-
-      {/* ---------------------------------------------------------- how */}
-      <section id="how" className="border-y-2 border-white/70 bg-white/45 backdrop-blur-sm">
-        <div className="mx-auto max-w-6xl px-5 py-16">
+        {/* --------------------------------------------------------- how */}
+        <section id="how" className="border-t border-hair px-6 py-24">
           <Reveal>
-            <h2 className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
-              Three decisions, then the app has it.
+            <p className="micro text-dim">01 — How it works</p>
+            <h2 className="disp mt-5 text-[13vw] leading-[0.82] sm:text-[7rem]">
+              Three decisions,
+              <br />
+              then it has it.
             </h2>
           </Reveal>
 
-          <div className="mt-10 grid gap-8 md:grid-cols-3">
+          <div className="mt-16 grid gap-x-12 gap-y-12 md:grid-cols-3">
             {STEPS.map((s, i) => (
               <Reveal key={s.n} delay={i * 0.06}>
-                <div className={`lift blk ${s.shade} h-full p-6`}>
-                  <p className="font-display text-5xl font-extrabold leading-none">{s.n}</p>
-                  <h3 className="mt-4 font-display text-xl font-extrabold">{s.title}</h3>
-                  <p className="mt-2 leading-relaxed">{s.body}</p>
+                <div className="dash pt-5">
+                  <p className="micro text-dim">{s.n}</p>
+                  <h3 className="disp mt-4 text-[2rem] leading-[0.95]">{s.title}</h3>
+                  <p className="mt-4 text-[14px] leading-relaxed text-dim">{s.body}</p>
                 </div>
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ---------------------------------------------------------- try */}
-      <section id="try" className="mx-auto max-w-6xl px-5 py-16">
-        <div className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-center">
+        {/* --------------------------------------------------------- try */}
+        <section id="try" className="border-t border-hair px-6 py-24">
+          <div className="grid gap-14 lg:grid-cols-[1fr_1.05fr] lg:items-start">
+            <Reveal>
+              <p className="micro text-dim">02 — The clock</p>
+              <h2 className="disp mt-5 text-[13vw] leading-[0.82] sm:text-[6.5rem]">
+                The clock is
+                <br />
+                the product.
+              </h2>
+              <p className="mt-8 max-w-[38ch] text-[14px] leading-relaxed text-dim">
+                So it is on the page rather than in a screenshot. Press start and run the first
+                block of Ground Floor — the real intervals, the real cadence. In the app the same
+                clock speaks the phase change out loud, so you never look at the screen mid-set.
+                Here you get the bar.
+              </p>
+            </Reveal>
+
+            <Reveal delay={0.06}>
+              <IntervalTimer />
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ---------------------------------------------------- sessions */}
+        <section id="sessions" className="border-t border-hair px-6 py-24">
           <Reveal>
-            <h2 className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
-              The clock is the product.
+            <p className="micro text-dim">03 — The library</p>
+            <h2 className="disp mt-5 text-[13vw] leading-[0.82] sm:text-[7rem]">
+              Six sessions.
+              <br />
+              That is all of it.
             </h2>
-            <p className="mt-4 max-w-md text-lg leading-relaxed">
-              So it is on the page rather than in a screenshot. Press start and run the first block
-              of Ground Floor — the real intervals, the real cadence.
-            </p>
-            <p className="mt-4 max-w-md">
-              In the app the same clock speaks the phase change out loud, so you never look at the
-              screen mid-set. Here you get the bar.
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.06}>
-            <IntervalTimer />
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ----------------------------------------------------- sessions */}
-      <section id="sessions" className="border-y-2 border-white/70 bg-ice/25 backdrop-blur-sm">
-        <div className="mx-auto max-w-6xl px-5 py-16">
-          <Reveal>
-            <h2 className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
-              Six sessions. That is the library.
-            </h2>
-            <p className="mt-3 max-w-lg text-lg">
+            <p className="mt-8 max-w-[46ch] text-[14px] leading-relaxed text-dim">
               A bigger catalogue would be a content problem pretending to be a training problem.
             </p>
           </Reveal>
 
-          <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-16 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
             {SESSIONS.map((s, i) => (
               <Reveal key={s.name} delay={i * 0.05}>
-                <article className={`lift blk ${s.shade} h-full`}>
-                  <div className="relative h-44 overflow-hidden border-b-4 border-ink">
+                <article className="group">
+                  <div className="relative aspect-[4/3] overflow-hidden">
                     <Image
                       src={U(s.photo, 560)}
                       alt=""
                       width={560}
-                      height={340}
-                      className="h-full w-full object-cover"
+                      height={420}
+                      className="h-full w-full object-cover grayscale brightness-[0.72] contrast-[1.15] transition-[filter,transform] duration-500 ease-out group-hover:scale-[1.02] group-hover:brightness-90"
                     />
-                    <span className="absolute left-0 top-0 border-b-4 border-r-4 border-ink bg-white px-3 py-1 font-display text-xs font-extrabold">
-                      {s.tag}
-                    </span>
                   </div>
-                  <div className="p-5">
-                    <h3 className="font-display text-2xl font-extrabold">{s.name}</h3>
-                    <p className="mt-2 font-display text-sm font-bold">
-                      {s.mins} min · {s.kit}
-                    </p>
+                  <div className="dash mt-5 flex items-baseline justify-between gap-4 pt-4">
+                    <h3 className="disp text-[1.7rem] leading-none">{s.name}</h3>
+                    <span className="micro tabular-nums text-dim">{s.mins} min</span>
                   </div>
+                  <p className="micro mt-3 text-dim">
+                    {s.tag} · {s.kit}
+                  </p>
                 </article>
               </Reveal>
             ))}
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* -------------------------------------------------------- price */}
-      <section id="price" className="mx-auto max-w-6xl px-5 py-16">
-        <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
-          <Reveal>
-            <h2 className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
-              One plan. It does everything.
-            </h2>
-            <p className="mt-4 max-w-md text-lg leading-relaxed">
-              There is no tier that unlocks the weights. Two weeks free, no card, and the export
-              button works whether you are paying or not.
-            </p>
-            <ul className="mt-6 space-y-2 font-display font-bold">
-              {[
-                "All six sessions and every progression",
-                "Voice cues for phase changes",
-                "Apple Health and Google Fit sync",
-                "CSV export of every set you have logged",
-              ].map((f) => (
-                <li key={f} className="flex gap-3">
-                  <span className="mt-2 h-3 w-3 shrink-0 rotate-45 bg-accent" />
-                  {f}
-                </li>
-              ))}
-            </ul>
-          </Reveal>
+        {/* ------------------------------------------------------- price */}
+        <section id="price" className="border-t border-hair px-6 py-24">
+          <div className="grid gap-14 lg:grid-cols-2 lg:items-start">
+            <Reveal>
+              <p className="micro text-dim">04 — Pricing</p>
+              <h2 className="disp mt-5 text-[13vw] leading-[0.82] sm:text-[6.5rem]">
+                One plan.
+                <br />
+                It does everything.
+              </h2>
+              <p className="mt-8 max-w-[38ch] text-[14px] leading-relaxed text-dim">
+                There is no tier that unlocks the weights. Two weeks free, no card, and the export
+                button works whether you are paying or not.
+              </p>
+              <ul className="mt-9 max-w-[40ch]">
+                {[
+                  "All six sessions and every progression",
+                  "Voice cues for phase changes",
+                  "Apple Health and Google Fit sync",
+                  "CSV export of every set you have logged",
+                ].map((f) => (
+                  <li key={f} className="dash micro flex gap-5 py-3 text-ink">
+                    <span className="text-dim">—</span>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
 
-          <Reveal delay={0.06}>
-            <div className="blk blk-rose p-8">
+            <Reveal delay={0.06}>
               <PlanToggle />
-              <a
-                href="#top"
-                className="btn mt-8 inline-block bg-ink px-7 py-4 font-display text-base font-extrabold text-white"
-              >
+              <a href="#top" className="btn btn-solid mt-10 inline-block px-8 py-3.5 text-[12px]">
                 Start two weeks free
               </a>
-              <p className="mt-4 text-sm">
+              <p className="mt-5 text-[13px] text-dim">
                 Tempo is not real.{" "}
-                <a href="https://github.com/new2codinglol/tempo-strength" className="underline underline-offset-2">
+                <a
+                  href="https://github.com/new2codinglol/tempo-strength"
+                  className="ul-hover text-ink"
+                >
                   Read the source
                 </a>{" "}
                 instead.
               </p>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+            </Reveal>
+          </div>
+        </section>
 
-      {/* ------------------------------------------------------- footer */}
-      <footer className="border-t-2 border-white/70 bg-ink/90 px-5 py-12 text-white">
-        <div className="mx-auto max-w-6xl">
-          <p className="font-display text-4xl font-extrabold tracking-tight sm:text-6xl">
+        {/* ------------------------------------------------------ footer */}
+        <footer className="border-t border-hair px-6 pb-14 pt-20">
+          <p className="disp text-[13vw] leading-[0.82] sm:text-[8rem]">
             Twenty minutes.
             <br />
             You have twenty minutes.
           </p>
-          <div className="mt-10 grid gap-6 border-t-4 border-white/25 pt-6 text-sm sm:grid-cols-2">
+          <div className="dash mt-16 grid gap-8 pt-6 text-[12px] leading-relaxed text-dim sm:grid-cols-2">
             <p>
               Tempo is a fictional product. This page is a design-engineering portfolio piece by
               Jason Low — the app does not exist, but the interval clock above really runs.
@@ -331,8 +355,7 @@ export default function Home() {
               Delaney Van, Ramy Mamdouh.
             </p>
           </div>
-        </div>
-      </footer>
+        </footer>
       </div>
     </div>
   );

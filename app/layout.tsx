@@ -1,17 +1,22 @@
 import type { Metadata } from "next";
-import { Michroma, Space_Mono } from "next/font/google";
+import { Archivo, Bodoni_Moda } from "next/font/google";
 import "./globals.css";
 
-const display = Michroma({
+/* Synchronized Digital Studio, copied to the letter: a high-contrast display
+   serif at poster size against a neutral grotesque doing all the small work.
+   Bodoni Moda is the closest thing on Google Fonts to the reference's face —
+   variable optical sizing, so the hairlines stay hair-thin at 12rem. */
+const display = Bodoni_Moda({
   subsets: ["latin"],
-  variable: "--font-michroma",
-  weight: ["400"],
+  variable: "--font-bodoni",
+  weight: ["400", "500"],
+  style: ["normal", "italic"],
 });
 
-const body = Space_Mono({
+const body = Archivo({
   subsets: ["latin"],
-  variable: "--font-space-mono",
-  weight: ["400", "700"],
+  variable: "--font-archivo",
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {

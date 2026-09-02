@@ -1,18 +1,22 @@
 @import "tailwindcss";
 
-@theme {
-  --font-display: var(--font-michroma), ui-monospace, monospace;
-  --font-sans: var(--font-space-mono), ui-monospace, monospace;
+/* ---------------------------------------------------------------------------
+   Synchronized Digital Studio, copied. Near-black ground under a crumpled
+   surface, a high-contrast display serif at poster size, and a neutral
+   grotesque doing every small job. The reference is monochrome — there is no
+   accent hue anywhere in it — so emphasis here is inversion, not colour.
+   That replaces the Y2K chrome and takes the ShaderGradient canvas with it.
+--------------------------------------------------------------------------- */
 
-  /* Y2K, from the deck: chrome and iridescence, one hot accent, ink that is
-     navy rather than black. The three Memphis primaries collapse to a single
-     magenta — chrome does the rest of the work. */
-  --color-ink: #1d2340;
-  --color-ink-soft: #55608a;
-  --color-accent: #ff4fd8;
-  --color-ice: #6fe0ff;
-  --color-chrome: #dbe3f2;
-  --color-rim: #ffffff;
+@theme {
+  --font-display: var(--font-bodoni), "Didot", "Bodoni MT", Georgia, serif;
+  --font-sans: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+
+  --color-void: #0a0a0a;
+  --color-ink: #c9c7c2;   /* the display face sits at grey, never white */
+  --color-bone: #edeae4;
+  --color-dim: #6b6a67;
+  --color-hair: #262523;
 }
 
 :root {
@@ -20,87 +24,129 @@
   --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
 body {
+  background: var(--color-void);
   color: var(--color-ink);
   min-height: 100dvh;
-  /* Fallback ground for reduced motion, no WebGL, or before the canvas
-     mounts. ShaderGradient paints over this. */
-  background: linear-gradient(150deg, #c0c8d8 0%, #8fa2c4 45%, #e3d4f2 100%);
-  background-attachment: fixed;
+  font-synthesis-weight: none;
 }
 
-/* Display face has one weight. Utilities asking for bold would synthesise it
-   and Michroma looks bad faked, so the weight is pinned here instead. */
-.font-display { font-weight: 400; letter-spacing: -0.01em; }
-
-/* ---- chrome ------------------------------------------------------------
-   Y2K elevation is a bevel, not an offset block: a white top highlight, a
-   cool gradient body, and a soft blue drop. */
-
-.blk {
-  background: linear-gradient(180deg, #ffffff 0%, #eef2f9 42%, #b9c6de 100%);
-  border: 2px solid var(--color-rim);
-  border-radius: 22px;
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.9) inset,
-    0 -10px 18px -14px rgba(20, 30, 70, 0.55) inset,
-    0 14px 30px -16px rgba(30, 40, 90, 0.5);
+/* The crumpled ground. The reference photographs creased fabric; this is
+   fractal noise lit from one side, which reads as the same thing at 6%. */
+.crush::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.012' numOctaves='4' seed='7'/%3E%3CfeDiffuseLighting lighting-color='%23fff' surfaceScale='2.4'%3E%3CfeDistantLight azimuth='115' elevation='58'/%3E%3C/feDiffuseLighting%3E%3C/filter%3E%3Crect width='600' height='600' filter='url(%23c)'/%3E%3C/svg%3E");
+  background-size: 900px 900px;
+  mix-blend-mode: soft-light;
 }
 
-/* the three former Memphis shadows become tints of the same chrome */
-.blk-lemon { box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 14px 30px -16px rgba(111, 224, 255, 0.55); }
-.blk-rose  { box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 14px 30px -16px rgba(255, 79, 216, 0.5); }
-.blk-cyan  { box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 14px 30px -16px rgba(30, 40, 90, 0.55); }
+/* --- type ---------------------------------------------------------------- */
+
+.disp {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 0.82;
+  letter-spacing: -0.015em;
+  color: var(--color-ink);
+}
+
+.micro {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  line-height: 1.45;
+}
+
+/* --- the display block: each line takes its own indent, as in the source --- */
+
+.stack { display: flex; flex-direction: column; }
+.line { display: block; white-space: nowrap; }
+
+/* Lines arrive by uncovering, not by moving — a curtain lifting off type
+   that was already set. clip-path keeps it on the compositor. */
+.veil { clip-path: inset(0 0 100% 0); }
+.lift { animation: lift 900ms var(--ease-out) forwards; }
+@keyframes lift { to { clip-path: inset(0 0 -12% 0); } }
+
+/* --- hairlines ----------------------------------------------------------- */
+
+.rule-v {
+  position: absolute;
+  top: -8%;
+  height: 116%;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, var(--color-hair) 14%, var(--color-hair) 86%, transparent);
+  transform-origin: top;
+  pointer-events: none;
+}
+.dash { border-top: 1px dashed var(--color-hair); }
+
+/* --- controls ------------------------------------------------------------ */
 
 .btn {
-  border: 2px solid var(--color-rim);
-  border-radius: 999px;
-  background: linear-gradient(180deg, #ffffff, #cfd9ea);
-  box-shadow:
-    0 2px 0 rgba(255, 255, 255, 0.95) inset,
-    0 10px 20px -12px rgba(30, 40, 90, 0.6);
-  transition: transform 140ms var(--ease-out), box-shadow 140ms var(--ease-out);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  border: 1px solid var(--color-ink);
+  color: var(--color-bone);
+  background: transparent;
+  transition: background-color 160ms var(--ease-out), color 160ms var(--ease-out),
+    transform 160ms var(--ease-out);
 }
 .btn:active { transform: scale(0.97); }
-.btn:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 3px; }
-
+.btn-solid { background: var(--color-bone); color: var(--color-void); border-color: var(--color-bone); }
+a:focus-visible, button:focus-visible {
+  outline: 1px solid var(--color-bone);
+  outline-offset: 4px;
+}
 @media (hover: hover) and (pointer: fine) {
-  .btn:hover {
-    box-shadow:
-      0 2px 0 rgba(255, 255, 255, 0.95) inset,
-      0 16px 26px -12px rgba(255, 79, 216, 0.5);
-  }
-  .lift { transition: transform 180ms var(--ease-out); }
-  .lift:hover { transform: translateY(-3px); }
+  .btn:hover { background: var(--color-bone); color: var(--color-void); }
+  .btn-solid:hover { background: transparent; color: var(--color-bone); }
+  .ul-hover { background-image: linear-gradient(var(--color-ink), var(--color-ink)); background-size: 0 1px;
+    background-repeat: no-repeat; background-position: 0 100%; transition: background-size 220ms var(--ease-out); }
+  .ul-hover:hover { background-size: 100% 1px; }
 }
 
-/* ---- ticker ------------------------------------------------------------ */
-@keyframes slide {
-  from { transform: translate3d(0, 0, 0); }
-  to   { transform: translate3d(-50%, 0, 0); }
-}
-.ticker-track { display: flex; width: max-content; animation: slide 28s linear infinite; }
+/* --- marquee ------------------------------------------------------------- */
 
-@keyframes wobble {
-  0%, 100% { transform: rotate(-2deg); }
-  50%      { transform: rotate(2deg); }
-}
-.wobble { animation: wobble 6s var(--ease-in-out) infinite; }
+@keyframes slide { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
+.ticker-track { display: flex; width: max-content; animation: slide 42s linear infinite; }
 
-/* the Memphis hatch becomes a Y2K matrix grid */
-.stripe {
-  background-image:
-    linear-gradient(rgba(29, 35, 64, 0.35) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(29, 35, 64, 0.35) 1px, transparent 1px);
-  background-size: 10px 10px;
-}
+/* --- the badge ----------------------------------------------------------- */
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.badge-ring { animation: spin 34s linear infinite; }
+
+/* --- the burst ----------------------------------------------------------- */
+
+.burst line { stroke-dasharray: 90; stroke-dashoffset: 90; }
+.burst.drawn line { animation: draw 900ms var(--ease-out) forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+/* --- preloader ----------------------------------------------------------- */
+
+.curtain { position: fixed; inset: 0; z-index: 90; background: var(--color-void); }
+.curtain-out { animation: curtain 780ms var(--ease-in-out) forwards; }
+@keyframes curtain { to { clip-path: inset(0 0 100% 0); } }
 
 @media (prefers-reduced-motion: reduce) {
-  .ticker-track, .wobble { animation: none; }
+  html { scroll-behavior: auto; }
+  .ticker-track, .badge-ring { animation: none; }
+  .veil { clip-path: none; }
+  .lift, .burst.drawn line { animation-duration: 1ms; }
+  .burst line { stroke-dashoffset: 0; }
   *, *::before, *::after {
     animation-duration: 1ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 1ms !important;
   }
-  .btn:hover, .lift:hover { transform: none; }
 }
