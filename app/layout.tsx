@@ -1,17 +1,17 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Karla } from "next/font/google";
+import { Michroma, Space_Mono } from "next/font/google";
 import "./globals.css";
 
-const display = Bricolage_Grotesque({
+const display = Michroma({
   subsets: ["latin"],
-  variable: "--font-bricolage",
-  weight: ["700", "800"],
+  variable: "--font-michroma",
+  weight: ["400"],
 });
 
-const body = Karla({
+const body = Space_Mono({
   subsets: ["latin"],
-  variable: "--font-karla",
-  weight: ["400", "500", "700", "800"],
+  variable: "--font-space-mono",
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {

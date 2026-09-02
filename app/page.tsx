@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { IntervalTimer, PlanToggle, Reveal } from "./_c/Bits";
+import { Iridescence } from "./_c/Iridescence";
 
 const U = (id: string, w: number) =>
   `https://images.unsplash.com/photo-${id}?w=${w}&q=72&auto=format&fit=crop`;
@@ -67,19 +68,21 @@ function Squiggle({ className = "" }: { className?: string }) {
 
 export default function Home() {
   return (
-    <div>
+    <div className="relative">
+      <Iridescence />
+      <div className="relative z-10">
       {/* ------------------------------------------------------- ticker */}
-      <div className="overflow-hidden border-b-4 border-ink bg-ink py-2.5">
+      <div className="overflow-hidden border-b-2 border-white/70 bg-ink/85 py-2.5 backdrop-blur-sm">
         <div className="ticker-track">
           {[0, 1].map((copy) => (
             <div key={copy} className="flex shrink-0" aria-hidden={copy === 1}>
               {TICKER.map((t) => (
                 <span
                   key={t}
-                  className="flex items-center gap-6 whitespace-nowrap px-6 font-display text-sm font-extrabold tracking-wide text-cyan"
+                  className="flex items-center gap-6 whitespace-nowrap px-6 font-display text-sm font-extrabold tracking-wide text-ice"
                 >
                   {t}
-                  <span className="h-2 w-2 rotate-45 bg-lemon" />
+                  <span className="h-2 w-2 rotate-45 bg-accent" />
                 </span>
               ))}
             </div>
@@ -88,19 +91,19 @@ export default function Home() {
       </div>
 
       {/* ---------------------------------------------------------- nav */}
-      <header className="sticky top-0 z-50 border-b-4 border-ink bg-paper">
+      <header className="sticky top-0 z-50 border-b-2 border-white/70 bg-white/55 backdrop-blur-md">
         <nav className="mx-auto flex max-w-6xl items-center gap-4 px-5 py-3">
           <a href="#top" className="font-display text-2xl font-extrabold tracking-tight">
-            Tempo<span className="text-rose">.</span>
+            Tempo<span className="text-accent">.</span>
           </a>
           <div className="ml-auto hidden gap-5 font-display text-sm font-extrabold sm:flex">
-            <a href="#how" className="hover:text-rose">How it works</a>
-            <a href="#try" className="hover:text-rose">Try the clock</a>
-            <a href="#sessions" className="hover:text-rose">Sessions</a>
+            <a href="#how" className="hover:text-accent">How it works</a>
+            <a href="#try" className="hover:text-accent">Try the clock</a>
+            <a href="#sessions" className="hover:text-accent">Sessions</a>
           </div>
           <a
             href="#price"
-            className="btn ml-auto bg-cyan px-4 py-2 font-display text-sm font-extrabold sm:ml-0"
+            className="btn ml-auto bg-accent px-4 py-2 font-display text-sm font-extrabold sm:ml-0"
           >
             Start free
           </a>
@@ -111,7 +114,7 @@ export default function Home() {
       <section id="top" className="relative mx-auto max-w-6xl px-5 py-14 lg:py-20">
         <div className="grid gap-12 lg:grid-cols-[1.15fr_.85fr]">
         <div>
-          <p className="inline-block border-4 border-ink bg-lemon px-3 py-1 font-display text-sm font-extrabold">
+          <p className="inline-block border-4 border-ink bg-ice/70 px-3 py-1 font-display text-sm font-extrabold">
             Strength for people with a job
           </p>
 
@@ -124,7 +127,7 @@ export default function Home() {
             <span className="block pl-[2%]">Three times</span>
             <span className="relative block pl-[14%] lg:whitespace-nowrap">
               a week.
-              <Squiggle className="wobble absolute -bottom-4 left-[14%] h-8 w-[70%] text-rose" />
+              <Squiggle className="wobble absolute -bottom-4 left-[14%] h-8 w-[70%] text-accent" />
             </span>
           </h1>
 
@@ -177,7 +180,7 @@ export default function Home() {
       </section>
 
       {/* ---------------------------------------------------------- how */}
-      <section id="how" className="border-y-4 border-ink bg-white">
+      <section id="how" className="border-y-2 border-white/70 bg-white/45 backdrop-blur-sm">
         <div className="mx-auto max-w-6xl px-5 py-16">
           <Reveal>
             <h2 className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
@@ -224,7 +227,7 @@ export default function Home() {
       </section>
 
       {/* ----------------------------------------------------- sessions */}
-      <section id="sessions" className="border-y-4 border-ink bg-cyan">
+      <section id="sessions" className="border-y-2 border-white/70 bg-ice/25 backdrop-blur-sm">
         <div className="mx-auto max-w-6xl px-5 py-16">
           <Reveal>
             <h2 className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
@@ -283,7 +286,7 @@ export default function Home() {
                 "CSV export of every set you have logged",
               ].map((f) => (
                 <li key={f} className="flex gap-3">
-                  <span className="mt-2 h-3 w-3 shrink-0 rotate-45 bg-rose" />
+                  <span className="mt-2 h-3 w-3 shrink-0 rotate-45 bg-accent" />
                   {f}
                 </li>
               ))}
@@ -305,7 +308,7 @@ export default function Home() {
       </section>
 
       {/* ------------------------------------------------------- footer */}
-      <footer className="border-t-4 border-ink bg-ink px-5 py-12 text-paper">
+      <footer className="border-t-2 border-white/70 bg-ink/90 px-5 py-12 text-paper">
         <div className="mx-auto max-w-6xl">
           <p className="font-display text-4xl font-extrabold tracking-tight sm:text-6xl">
             Twenty minutes.
@@ -324,6 +327,7 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      </div>
     </div>
   );
 }

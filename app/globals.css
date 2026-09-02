@@ -1,15 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: var(--font-bricolage), "Arial Black", system-ui, sans-serif;
-  --font-sans: var(--font-karla), system-ui, sans-serif;
+  --font-display: var(--font-michroma), ui-monospace, monospace;
+  --font-sans: var(--font-space-mono), ui-monospace, monospace;
 
-  --color-paper: #f7f2ea;
-  --color-ink: #111111;
-  --color-cyan: #00b3e6;
-  --color-lemon: #ffd23f;
-  --color-rose: #ff5c8a;
-  --color-grass: #2ec27e;
+  /* Y2K, from the deck: chrome and iridescence, one hot accent, ink that is
+     navy rather than black. The three Memphis primaries collapse to a single
+     magenta — chrome does the rest of the work. */
+  --color-ink: #1d2340;
+  --color-ink-soft: #55608a;
+  --color-accent: #ff4fd8;
+  --color-ice: #6fe0ff;
+  --color-chrome: #dbe3f2;
+  --color-rim: #ffffff;
 }
 
 :root {
@@ -18,63 +21,65 @@
 }
 
 body {
-  background: var(--color-paper);
   color: var(--color-ink);
   min-height: 100dvh;
+  /* Fallback ground for reduced motion, no WebGL, or before the canvas
+     mounts. ShaderGradient paints over this. */
+  background: linear-gradient(150deg, #c0c8d8 0%, #8fa2c4 45%, #e3d4f2 100%);
+  background-attachment: fixed;
 }
 
-/* ---- Memphis blocks --------------------------------------------------- */
-/* Hard black keyline, flat offset shadow, zero radius. The shadow is a     */
-/* second solid block, not a blur — that is the whole grammar.              */
+/* Display face has one weight. Utilities asking for bold would synthesise it
+   and Michroma looks bad faked, so the weight is pinned here instead. */
+.font-display { font-weight: 400; letter-spacing: -0.01em; }
+
+/* ---- chrome ------------------------------------------------------------
+   Y2K elevation is a bevel, not an offset block: a white top highlight, a
+   cool gradient body, and a soft blue drop. */
 
 .blk {
-  border: 4px solid var(--color-ink);
-  background: #fff;
-  box-shadow: 8px 8px 0 var(--color-ink);
+  background: linear-gradient(180deg, #ffffff 0%, #eef2f9 42%, #b9c6de 100%);
+  border: 2px solid var(--color-rim);
+  border-radius: 22px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 -10px 18px -14px rgba(20, 30, 70, 0.55) inset,
+    0 14px 30px -16px rgba(30, 40, 90, 0.5);
 }
-.blk-lemon { box-shadow: 8px 8px 0 var(--color-lemon), 16px 16px 0 var(--color-ink); }
-.blk-rose  { box-shadow: 8px 8px 0 var(--color-rose),  16px 16px 0 var(--color-ink); }
-.blk-cyan  { box-shadow: 8px 8px 0 var(--color-cyan),  16px 16px 0 var(--color-ink); }
+
+/* the three former Memphis shadows become tints of the same chrome */
+.blk-lemon { box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 14px 30px -16px rgba(111, 224, 255, 0.55); }
+.blk-rose  { box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 14px 30px -16px rgba(255, 79, 216, 0.5); }
+.blk-cyan  { box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 14px 30px -16px rgba(30, 40, 90, 0.55); }
 
 .btn {
-  border: 4px solid var(--color-ink);
-  box-shadow: 5px 5px 0 var(--color-ink);
+  border: 2px solid var(--color-rim);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #ffffff, #cfd9ea);
+  box-shadow:
+    0 2px 0 rgba(255, 255, 255, 0.95) inset,
+    0 10px 20px -12px rgba(30, 40, 90, 0.6);
   transition: transform 140ms var(--ease-out), box-shadow 140ms var(--ease-out);
 }
-.btn:active {
-  transform: translate(3px, 3px);
-  box-shadow: 2px 2px 0 var(--color-ink);
-}
-.btn:focus-visible {
-  outline: 4px solid var(--color-cyan);
-  outline-offset: 3px;
-}
+.btn:active { transform: scale(0.97); }
+.btn:focus-visible { outline: 3px solid var(--color-accent); outline-offset: 3px; }
 
 @media (hover: hover) and (pointer: fine) {
   .btn:hover {
-    transform: translate(-1px, -1px);
-    box-shadow: 7px 7px 0 var(--color-ink);
+    box-shadow:
+      0 2px 0 rgba(255, 255, 255, 0.95) inset,
+      0 16px 26px -12px rgba(255, 79, 216, 0.5);
   }
-  .lift {
-    transition: transform 180ms var(--ease-out);
-  }
-  .lift:hover {
-    transform: translate(-3px, -3px);
-  }
+  .lift { transition: transform 180ms var(--ease-out); }
+  .lift:hover { transform: translateY(-3px); }
 }
 
-/* ---- ticker ----------------------------------------------------------- */
-/* Constant motion, so: linear, and CSS so it stays off the main thread.    */
-
+/* ---- ticker ------------------------------------------------------------ */
 @keyframes slide {
   from { transform: translate3d(0, 0, 0); }
   to   { transform: translate3d(-50%, 0, 0); }
 }
-.ticker-track {
-  display: flex;
-  width: max-content;
-  animation: slide 28s linear infinite;
-}
+.ticker-track { display: flex; width: max-content; animation: slide 28s linear infinite; }
 
 @keyframes wobble {
   0%, 100% { transform: rotate(-2deg); }
@@ -82,12 +87,12 @@ body {
 }
 .wobble { animation: wobble 6s var(--ease-in-out) infinite; }
 
+/* the Memphis hatch becomes a Y2K matrix grid */
 .stripe {
-  background-image: repeating-linear-gradient(
-    -45deg,
-    var(--color-ink) 0 8px,
-    transparent 8px 18px
-  );
+  background-image:
+    linear-gradient(rgba(29, 35, 64, 0.35) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(29, 35, 64, 0.35) 1px, transparent 1px);
+  background-size: 10px 10px;
 }
 
 @media (prefers-reduced-motion: reduce) {
